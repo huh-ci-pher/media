@@ -18,10 +18,12 @@ public class SocialUser {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    @JoinColumn(name = "social_profile_id")
-
     private SocialProfile socialProfile;
 
-    @OneToMany(mappedBy = "socialUser")
+
+    @OneToMany(mappedBy = "socialUser",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @ManyToMany
@@ -36,6 +38,12 @@ public class SocialUser {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id);
+    }
+
+    public void setSocialProfile(SocialProfile socialProfile) {
+        socialProfile.setUser(this);
+        this.socialProfile = socialProfile;
     }
 }
